@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDITH Core Setup</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="flex flex-col min-h-screen items-center justify-center p-8 md:p-12 lg:p-16 selection:bg-white/20 selection:text-white">
+
+  <div class="bg-glow"></div>
+  <div class="bg-glow-bottom"></div>
+
+
+  <div class="fade-in arc-reactor-container mb-10 lg:mb-14" id="logo-setup">
+    <div class="arc-reactor">
+      <div class="arc-reactor-core"></div>
+      <div class="arc-reactor-ring"></div>
+      <div class="arc-reactor-ring-outer"></div>
+      <div class="arc-reactor-coils">
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+        <div class="arc-reactor-coil"></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="fade-in glass-panel w-full max-w-md rounded-[24px] p-8 md:p-10 lg:p-12 flex flex-col gap-6" id="card-setup">
+    
+    <form id="form-setup" class="flex flex-col gap-4 text-left">
+      <div class="flex flex-col gap-1" id="group-setup-groq">
+        <label for="setup-groq" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1 flex justify-between items-center w-full">
+          <span>Groq API Key</span>
+          <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" class="text-[9px] tracking-normal text-emerald-400 hover:text-emerald-300 font-bold transition-all normal-case" onclick="event.stopPropagation()">Get Key ↗</a>
+        </label>
+        <input type="password" id="setup-groq" class="glass-input px-4 py-3 text-sm focus:ring-1 focus:ring-white/20" placeholder="gsk_••••••••">
+      </div>
+      <div class="flex flex-col gap-1" id="group-setup-mistral">
+        <label for="setup-mistral" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1 flex justify-between items-center w-full">
+          <span>Mistral API Key</span>
+          <a href="https://console.mistral.ai/api-keys/" target="_blank" rel="noopener noreferrer" class="text-[9px] tracking-normal text-emerald-400 hover:text-emerald-300 font-bold transition-all normal-case" onclick="event.stopPropagation()">Get Key ↗</a>
+        </label>
+        <input type="password" id="setup-mistral" class="glass-input px-4 py-3 text-sm focus:ring-1 focus:ring-white/20" placeholder="••••••••••••••••">
+      </div>
+      <div class="flex flex-col gap-1" id="group-setup-safebrowsing">
+        <label for="setup-safebrowsing" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1 flex justify-between items-center w-full">
+          <span>Google Safe Browsing API Key</span>
+          <a href="https://console.cloud.google.com/apis/library/safebrowsing.googleapis.com" target="_blank" rel="noopener noreferrer" class="text-[9px] tracking-normal text-emerald-400 hover:text-emerald-300 font-bold transition-all normal-case" onclick="event.stopPropagation()">Get Key ↗</a>
+        </label>
+        <input type="password" id="setup-safebrowsing" class="glass-input px-4 py-3 text-sm focus:ring-1 focus:ring-white/20" placeholder="AIzaSy••••••••">
+      </div>
+      <div class="flex flex-col gap-1" id="group-setup-virustotal">
+        <label for="setup-virustotal" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1 flex justify-between items-center w-full">
+          <span>VirusTotal API Key</span>
+          <a href="https://www.virustotal.com/gui/my-apikey" target="_blank" rel="noopener noreferrer" class="text-[9px] tracking-normal text-emerald-400 hover:text-emerald-300 font-bold transition-all normal-case" onclick="event.stopPropagation()">Get Key ↗</a>
+        </label>
+        <input type="password" id="setup-virustotal" class="glass-input px-4 py-3 text-sm focus:ring-1 focus:ring-white/20" placeholder="••••••••••••••••••••••••">
+      </div>
+
+    
+      <button type="submit" class="apple-button w-full py-3 mt-2 text-sm" id="btn-setup-save">
+        Save & Continue
+      </button>
+    </form>
+
+  
+    <div class="flex flex-col gap-3 mt-2" id="setup-footer">
+      <button id="setup-skip" class="text-xs text-white/40 hover:text-white/85 cursor-pointer underline underline-offset-4 transition-all">
+        Skip setup
+      </button>
+      <div class="text-[10px] text-white/25 leading-normal max-w-[280px] mx-auto" id="note-setup">
+        Keys are stored locally in your browser only.
+      </div>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

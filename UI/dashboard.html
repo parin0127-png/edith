@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDITH Core Security Module</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="flex flex-col min-h-screen items-center justify-center p-4 md:p-8 lg:p-12 pb-36 md:pb-44 selection:bg-white/20 selection:text-white">
+ 
+  <div class="bg-glow"></div>
+  <div class="bg-glow-bottom"></div>
+
+
+  <header class="fade-in w-full max-w-4xl rounded-[24px] glass-panel flex flex-col md:flex-row items-center justify-between p-4 md:p-5 md:px-6 gap-4 mb-8 border border-white/20" id="dashboard-header">
+    
+    <div class="flex items-center gap-3 select-none">
+      <div class="arc-reactor-container p-1">
+        <div class="arc-reactor-small">
+          <div class="arc-reactor-core"></div>
+          <div class="arc-reactor-ring"></div>
+          <div class="arc-reactor-ring-outer"></div>
+        </div>
+      </div>
+      <div class="flex flex-col text-left">
+        <h1 class="text-base tracking-widest uppercase font-bold text-slate-800">EDITH</h1>
+      </div>
+    </div>
+
+    
+    <div class="relative flex bg-white/15 border border-white/30 p-[3px] rounded-full text-xs font-sans font-bold tracking-wide transition-all shadow-md gap-0.5" id="view-mode-selector">
+      <button id="swapper-dashboard" class="relative z-10 px-6 py-2.5 rounded-full text-slate-850 font-extrabold text-[11px] leading-none transition-all cursor-pointer select-none">
+        DASHBOARD
+      </button>
+      <button id="swapper-tools" class="relative z-10 px-6 py-2.5 rounded-full text-slate-500 hover:text-slate-800 font-extrabold text-[11px] leading-none transition-all cursor-pointer select-none">
+        TOOLS
+      </button>
+      
+      <div class="absolute top-[3px] bottom-[3px] left-[3px] rounded-full bg-white/45 border border-white/60 shadow-sm transition-all duration-300 ease-out z-0 pointer-events-none" id="swapper-active-pill" style="width: 104px;"></div>
+    </div>
+
+    
+    <div class="flex items-center gap-4">
+      <div id="user-badge" class="text-[10px] text-slate-600 bg-white/20 border border-white/35 rounded-full px-3 py-1.5 font-sans font-semibold flex items-center gap-1.5 leading-none">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+        operator: <span id="bg-user-name" class="text-slate-800 font-bold">admin</span>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="w-full max-w-4xl mx-auto flex-1 mb-8" id="dashboard-main">
+    
+    
+    <section class="w-full flex flex-col" id="ai-section">
+      <div class="fade-in glass-panel rounded-[28px] p-6 md:p-8 flex flex-col gap-6 flex-1 border border-white/25">
+        <div class="flex items-center justify-between card-title" id="ai-header">
+          <div class="flex items-center gap-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></div>
+            <span class="text-xs uppercase tracking-widest text-slate-700 font-bold font-sans">EDITH Intelligence Core</span>
+          </div>
+          <span class="text-[10px] monospace-display text-slate-500 font-medium" id="ai-model-status">GROQ/MISTRAL RECON</span>
+        </div>
+
+        <div class="relative flex-1 flex flex-col gap-4">
+          <textarea id="ai-input" class="glass-input w-full p-5 text-sm resize-none custom-scrollbar min-h-[140px] flex-1 focus:ring-1 focus:ring-black/25" 
+            placeholder="Paste raw security logs, incident records, parse targets or telemetry records here output analysis..."></textarea>
+          
+          <div class="flex justify-between items-center" id="ai-actions">
+            <span class="text-[11px] text-slate-550 font-sans tracking-wide">Ctrl + Enter to trigger</span>
+            <button id="btn-analyze" class="apple-button px-8 py-3 text-sm transition-all shadow-md font-semibold">
+              Analyze Context
+            </button>
+          </div>
+        </div>
+
+        
+        <div class="relative flex flex-col flex-1 min-h-[220px]" id="result-container">
+          <div id="ai-result" class="glass-input flex-1 min-h-[220px] p-6 rounded-2xl font-mono text-[13px] leading-relaxed text-slate-800 custom-scrollbar overflow-y-auto max-h-[320px] select-text border border-black/5">System IDLE. Awaiting security logs...</div>
+
+         
+          <div id="ai-loader" class="absolute inset-0 modal-overlay rounded-2xl flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none transition-all duration-300">
+            <div class="relative flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full border-[3px] border-slate-450 border-t-slate-800 animate-spin"></div>
+              <div class="absolute w-2.5 h-2.5 rounded-full bg-slate-800"></div>
+            </div>
+            <span id="ai-loader-text" class="text-xs font-sans text-slate-800 animate-pulse font-semibold tracking-wide">EDITH is thinking...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+    <section class="w-full flex flex-col hidden" id="tools-section">
+      <div class="fade-in glass-panel rounded-[28px] p-6 md:p-8 flex flex-col gap-6 h-full justify-between border border-white/20">
+        <div class="flex items-center gap-3 card-title" id="tools-header">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-sm uppercase tracking-widest text-slate-800 font-extrabold font-sans">Tools</span>
+        </div>
+
+        
+        <div class="grid grid-cols-2 gap-6 md:gap-8 flex-1 my-auto" id="tools-grid">
+         
+          <button id="tile-safebrowsing" class="pure-glass-button rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center gap-4 text-center cursor-pointer active:scale-98">
+            <div class="p-4 bg-white/20 border border-white/30 rounded-full text-slate-800 shadow-sm">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+              </svg>
+            </div>
+            <span class="text-sm font-bold tracking-wide text-slate-800 font-sans">Safe Browsing</span>
+          </button>
+
+          
+          <button id="tile-virustotal" class="pure-glass-button rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center gap-4 text-center cursor-pointer active:scale-98">
+            <div class="p-4 bg-white/20 border border-white/30 rounded-full text-slate-800 shadow-sm">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z"/>
+              </svg>
+            </div>
+            <span class="text-sm font-bold tracking-wide text-slate-800 font-sans">VirusTotal</span>
+          </button>
+
+          
+          <button id="tile-ipinfo" class="pure-glass-button rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center gap-4 text-center cursor-pointer active:scale-98">
+            <div class="p-4 bg-white/20 border border-white/30 rounded-full text-slate-800 shadow-sm">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z"/>
+              </svg>
+            </div>
+            <span class="text-sm font-bold tracking-wide text-slate-800 font-sans">IP Info</span>
+          </button>
+
+          
+          <button id="tile-dnslookup" class="pure-glass-button rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center gap-4 text-center cursor-pointer active:scale-98">
+            <div class="p-4 bg-white/20 border border-white/30 rounded-full text-slate-800 shadow-sm">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-.154-8.243-.466M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span class="text-sm font-bold tracking-wide text-slate-800 font-sans">DNS Lookup</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="pixel-pet-container select-none" id="pixel-pet">
+    <div id="pet-bubble">HI! Welcome to EDITH. Greet you today!</div>
+    <svg width="48" height="48" viewBox="0 0 32 32" style="image-rendering: pixelated; width: 48px; height: 48px;">
+      <rect x="9" y="3" width="14" height="1" fill="#1e293b" />
+      <rect x="7" y="4" width="18" height="1" fill="#1e293b" />
+      <rect x="6" y="5" width="20" height="11" fill="#334155" />
+      <rect x="9" y="4" width="14" height="1" fill="#64748b" />
+      <rect x="7" y="5" width="2" height="10" fill="#475569" />
+      <rect x="9" y="5" width="14" height="2" fill="#475569" />
+      
+      <rect x="4" y="8" width="2" height="6" fill="#0f172a" />
+      <rect x="26" y="8" width="2" height="6" fill="#0f172a" />
+      <rect x="5" y="7" width="1" height="8" fill="#334155" />
+      <rect x="26" y="7" width="1" height="8" fill="#334155" />
+
+      <rect x="9" y="7" width="14" height="7" fill="#020617" />
+      <rect x="9" y="7" width="14" height="1" fill="#1e293b" />
+      <rect x="11" y="9" width="3" height="3" fill="#ffffff" />
+      <rect x="18" y="9" width="3" height="3" fill="#ffffff" />
+
+      <rect x="14" y="16" width="4" height="2" fill="#0f172a" />
+
+      <rect x="10" y="18" width="12" height="8" fill="#334155" />
+      <rect x="11" y="18" width="10" height="1" fill="#475569" />
+      <rect x="10" y="19" width="2" height="6" fill="#475569" />
+      <rect x="14" y="20" width="4" height="3" fill="#020617" />
+      <rect x="15" y="21" width="2" height="1" fill="#f97316" /> 
+
+      <g class="pixel-pet-leg-1">
+        <rect x="7" y="19" width="3" height="5" fill="#334155" />
+        <rect x="6" y="23" width="2" height="2" fill="#0f172a" />
+      </g>
+      <g class="pixel-pet-leg-2">
+        <rect x="22" y="19" width="3" height="5" fill="#334155" />
+        <rect x="24" y="23" width="2" height="2" fill="#0f172a" />
+      </g>
+
+      <g class="pixel-pet-leg-1">
+        <rect x="11" y="26" width="3" height="4" fill="#1e293b" />
+        <rect x="10" y="29" width="4" height="1" fill="#0f172a" />
+      </g>
+      <g class="pixel-pet-leg-2">
+        <rect x="18" y="26" width="3" height="4" fill="#1e293b" />
+        <rect x="18" y="29" width="4" height="1" fill="#0f172a" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="fixed bottom-8 right-8 flex items-center gap-4 z-40" id="corner-menu">
+    <button id="btn-modal-profile" class="p-4 bg-black/10 backdrop-blur-xl border border-black/10 rounded-full text-slate-600 hover:text-slate-900 hover:bg-black/15 transition-all cursor-pointer shadow-2xl hover:scale-105 active:scale-95 duration-200">
+      <svg class="w-5 h-5" fill="none" stroke="#1e293b" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+      </svg>
+    </button>
+    <button id="btn-modal-settings" class="p-4 bg-black/10 backdrop-blur-xl border border-black/10 rounded-full text-slate-600 hover:text-slate-900 hover:bg-black/15 transition-all cursor-pointer shadow-2xl hover:scale-105 active:scale-95 duration-200">
+      <svg class="w-5 h-5" fill="none" stroke="#1e293b" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a6.723 6.723 0 010 .252c-.008.379.137.751.43.992l1.003.828a1.125 1.125 0 01.26 1.43l-1.296 2.247a1.125 1.125 0 01-1.37.49l-1.216-.456a1.125 1.125 0 00-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281a1.125 1.125 0 00-.646-.87a6.57 6.57 0 01-.22-.127a1.125 1.125 0 00-1.074-.124l-1.217.456a1.125 1.125 0 01-1.37-.49l-1.296-2.247a1.125 1.125 0 01.26-1.43l1.003-.827c.293-.24.438-.614.43-.992a6.723 6.723 0 010-.251c.008-.38-.137-.753-.43-.993l-1.003-.828a1.125 1.125 0 01-.26-1.43l1.296-2.247a1.125 1.125 0 011.37-.49l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128c.332-.183.582-.495.644-.869l.214-1.28z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    </button>
+  </div>
+
+  <dialog id="tool-modal" class="modal-overlay hidden fixed inset-0 w-full h-full flex items-center justify-center p-4 z-50">
+    <div class="glass-panel w-full max-w-lg rounded-2xl p-6 relative flex flex-col gap-4 border border-white/10 animate-view-fade-in" id="tool-modal-body">
+      <button id="btn-close-tool-modal" class="absolute top-4 right-4 p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/5 transition-all cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-white/5 pb-3 mt-1" id="tool-modal-title-row">
+        <div id="tool-modal-icon-container" class="p-2.5 bg-white/5 border border-white/10 rounded-full text-white/80">
+        </div>
+        <div class="flex flex-col text-left">
+          <span id="tool-modal-name" class="text-sm font-semibold tracking-wide font-sans text-white">Security Tool</span>
+          <span id="tool-modal-desc" class="text-[10px] text-white/40">Remote Endpoint Execution</span>
+        </div>
+      </div>
+
+      <div id="tool-modal-input-container" class="flex flex-col gap-1.5 text-left">
+        <label id="tool-modal-label" for="tool-modal-input" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold">URL Endpoint</label>
+        <div class="flex gap-2">
+          <input type="text" id="tool-modal-input" class="glass-input px-4 py-3 text-sm flex-1" placeholder="https://example.com" required>
+          <button id="btn-tool-execute" class="apple-button px-5 text-xs">Run Tool</button>
+        </div>
+      </div>
+
+      <div class="relative flex-1 min-h-[160px] max-h-[240px] flex flex-col text-left" id="modal-result-box">
+        <div id="tool-modal-result" class="glass-card flex-1 min-h-[160px] p-4 rounded-xl font-mono text-xs leading-relaxed text-white/80 custom-scrollbar overflow-y-auto select-text border border-white/5 whitespace-pre-wrap select-text">Ready. Enter parameters above and run search.</div>
+        
+        <div id="tool-modal-loader" class="absolute inset-0 modal-overlay rounded-xl flex flex-col items-center justify-center gap-3 opacity-0 pointer-events-none transition-all duration-300">
+          <div class="relative flex items-center justify-center">
+            <div class="w-10 h-10 rounded-full border-[3px] border-white/5 border-t-white/80 animate-spin"></div>
+            <div class="absolute w-2 h-2 rounded-full bg-white/90"></div>
+          </div>
+          <span id="tool-modal-loader-text" class="text-[11px] font-sans text-white/60 animate-pulse font-medium">EDITH is reading...</span>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="settings-modal" class="modal-overlay hidden fixed inset-0 w-full h-full flex items-center justify-center p-4 z-50">
+    <div class="glass-panel w-full max-w-sm rounded-[20px] p-6 relative flex flex-col gap-4 border border-white/10" id="settings-modal-body">
+      <button id="btn-close-settings-modal" class="absolute top-4 right-4 p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/5 transition-all cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+ 
+      <div class="border-b border-white/5 pb-2 text-left mt-1" id="settings-modal-title">
+        <span class="text-xs uppercase tracking-widest text-white/40 font-semibold">EDITH Configurations</span>
+      </div>
+ 
+      <form id="form-modal-settings" class="flex flex-col gap-3.5 text-left">
+        <div class="flex flex-col gap-1" id="group-modal-groq">
+          <label for="modal-setup-groq" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1">Groq API Key</label>
+          <input type="password" id="modal-setup-groq" class="glass-input px-4 py-2 text-xs focus:ring-1 focus:ring-white/20">
+        </div>
+        <div class="flex flex-col gap-1" id="group-modal-mistral">
+          <label for="modal-setup-mistral" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1">Mistral API Key</label>
+          <input type="password" id="modal-setup-mistral" class="glass-input px-4 py-2 text-xs focus:ring-1 focus:ring-white/20">
+        </div>
+        <div class="flex flex-col gap-1" id="group-modal-safebrowsing">
+          <label for="modal-setup-safebrowsing" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1">Google Safe Browsing API Key</label>
+          <input type="password" id="modal-setup-safebrowsing" class="glass-input px-4 py-2 text-xs focus:ring-1 focus:ring-white/20">
+        </div>
+        <div class="flex flex-col gap-1" id="group-modal-virustotal">
+          <label for="modal-setup-virustotal" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1">VirusTotal API Key</label>
+          <input type="password" id="modal-setup-virustotal" class="glass-input px-4 py-2 text-xs focus:ring-1 focus:ring-white/20">
+        </div>
+ 
+        <button type="submit" class="apple-button w-full py-2.5 mt-2 text-xs font-semibold">
+          Apply Configurations
+        </button>
+      </form>
+
+      <div class="border-t border-white/15 pt-4 mt-1">
+        <button id="btn-logout" type="button" class="w-full py-2.5 bg-rose-500/10 hover:bg-rose-500/20 active:bg-rose-500/30 text-rose-400 hover:text-rose-300 border border-rose-500/30 hover:border-rose-500/50 rounded-lg text-xs font-extrabold tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+          </svg>
+          LOGOUT OPERATOR SESSION
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="profile-modal" class="modal-overlay hidden fixed inset-0 w-full h-full flex items-center justify-center p-4 z-50">
+    <div class="glass-panel w-full max-w-sm rounded-[20px] p-6 relative flex flex-col gap-4 border border-white/10" id="profile-modal-body">
+      <button id="btn-close-profile-modal" class="absolute top-4 right-4 p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/5 transition-all cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="border-b border-white/5 pb-2 text-left mt-1" id="profile-modal-title">
+        <span class="text-xs uppercase tracking-widest text-white/40 font-semibold">User Profile Settings</span>
+      </div>
+
+      <form id="form-modal-profile" class="flex flex-col gap-3.5 text-left">
+        <div class="flex flex-col gap-1.5" id="group-modal-pro-name">
+          <label for="modal-profile-name" class="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-1">Change Operator Name</label>
+          <input type="text" id="modal-profile-name" class="glass-input px-4 py-3 text-sm focus:ring-1 focus:ring-white/20" placeholder="admin" required>
+        </div>
+
+        <button type="submit" class="apple-button w-full py-3 mt-1 text-sm">
+          Update Profile Name
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="/script.js"></script>
+</body>
+</html>
