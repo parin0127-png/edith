@@ -26,7 +26,7 @@ EDITH is submitted under the **Creative Apps** track of the [Microsoft Agents Le
 
 ## Demo Video
 
-> 🎥 **[Watch the Demo on YouTube](#)** ← *(add your link here)*
+> 🎥 *[*[Watch the Demo on YouTube](#)** ← *(add your link here)](https://github.com/user-attachments/assets/9bb7e4e0-79df-4f53-97ec-474143f24d12)*
 
 ---
 
